@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\models\Book;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -9,16 +10,18 @@ class BookController extends Controller
     public function index(){
         $title = 'Daftar Buku';
         $description = 'Daftar buku yang tersedia di perpustakaan';
-        $books = [
-            'Pemrograman PHP',
-            'Laravel untuk pemula',
-            'Basis Data',
-            'Algoritma dan Pemrograman',
-            'Pemrograman Berorientasi Objek',
-            'AI untuk Dunia',
-            'Ultraman',
-            'NasionalIsMe'
-        ];
+        // $books = [
+        //     'Pemrograman PHP',
+        //     'Laravel untuk pemula',
+        //     'Basis Data',
+        //     'Algoritma dan Pemrograman',
+        //     'Pemrograman Berorientasi Objek',
+        //     'AI untuk Dunia',
+        //     'Ultraman',
+        //     'NasionalIsMe'
+        // ];
+
+        $books = Book::all();
  
         $authors = [
             'Ahmad Fauzi',
