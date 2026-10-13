@@ -2,53 +2,69 @@
 
 namespace App\Http\Controllers;
 
-use App\models\Book;
+use App\Models\Book;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $title = 'Daftar Buku';
         $description = 'Daftar buku yang tersedia di perpustakaan';
-        // $books = [
-        //     'Pemrograman PHP',
-        //     'Laravel untuk pemula',
-        //     'Basis Data',
-        //     'Algoritma dan Pemrograman',
-        //     'Pemrograman Berorientasi Objek',
-        //     'AI untuk Dunia',
-        //     'Ultraman',
-        //     'NasionalIsMe'
-        // ];
-
         $books = Book::all();
- 
-        $authors = [
-            'Ahmad Fauzi',
-            'Dewi Lestari',
-            'Budi Raharjo',
-            'Siti Nurhaliza',
-            'Rian Ardiansyah',
-            'Putri Wulandari',
-            'Eko Prasetyo',
-            'Maya Kartika',
-        ];
+        $stock = Book::sum('stock');
 
-        $years = [
-            2015,
-            2018,
-            2020,
-            2012,
-            2023,
-            2017,
-            2019,
-            2021,
-        ];
-
-        $stock = 7;
-        return view('book.index' , compact('title', 'description', 'books','authors','years' , 'stock'));
+        return view('books.index', compact('title', 'description', 'books', 'stock'));
     }
-    public function show ($id){ 
-            return 'ID Buku' . $id;
-        }
+
+    public function show($id)
+    { 
+        return 'ID Buku ' . $id;
+    }
+
+    public function create()
+    {
+        return view('books.create');
+    }
+
+    public function store(Request $request)
+    {
+        Book::create([
+            'title' => $request->title,
+            'author' => $request->author,
+            'year' => $request->year,
+            'stock' => $request->stock,
+        ]);
+
+        return redirect()->route('books.index');
+    }
+
+    // --- TAMBAHKAN KODE INI UNTUK FITUR EDIT & UPDATE ---
+
+    // 1. Menampilkan form edit berdasarkan data buku (Route Model Binding)
+    public function edit(Book $book)
+    {
+        return view('books.edit', compact('book'));
+    }
+
+    // 2. Memperbarui data buku ke database
+    public function update(Request $request, Book $book)
+    {
+        $book->update([
+            'title' => $request->title,
+            'author' => $request->author,
+            'year' => $request->year,
+            'stock' => $request->stock,
+        ]);
+
+        return redirect()->route('books.index');
+    }
+
+    // 3. Menghapus data buku
+    public function destroy(Book $book)
+    {
+        $book->delete();
+
+        return redirect()->route('books.index');
+    }
 }

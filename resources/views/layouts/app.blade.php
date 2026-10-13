@@ -15,9 +15,9 @@
 
     <nav>
     <a href="/books">Books</a> |
-    <a href="/categories">Categories</a>|
+    <a href="/categories">Categories</a> |
     <a href="/members">Members</a> |
-    <a href="/dashboard">dashboard</a> |
+    <a href="/dashboard">Dashboard</a> |
 </nav>
 
         <hr>
