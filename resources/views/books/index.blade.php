@@ -19,6 +19,7 @@
             <tr>
                 <th>No</th>
                 <th>Judul Buku</th>
+                <th>Kategori</th> <!-- Kolom baru untuk menampilkan kategori -->
                 <th>Penulis</th>
                 <th>Tahun</th>
                 <th>Stok</th>
@@ -30,6 +31,12 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td><strong>{{ $book->title }}</strong></td>
+                    <td>
+                        <!-- Menampilkan nama kategori menggunakan relasi eloquent dengan safe operator -->
+                        <span style="background: #e9ecef; padding: 3px 6px; border-radius: 3px; font-size: 0.9rem;">
+                            {{ $book->category?->name ?? 'Belum ada kategori' }}
+                        </span>
+                    </td>
                     <td>{{ $book->author }}</td>
                     <td>{{ $book->year }}</td>
                     <td>
@@ -53,7 +60,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" style="text-align: center; color: #888;">Tidak ada data buku yang tersedia.</td>
+                    <td colspan="7" style="text-align: center; color: #888;">Tidak ada data buku yang tersedia.</td>
                 </tr>
             @endforelse
         </tbody>

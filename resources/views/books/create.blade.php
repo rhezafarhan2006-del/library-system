@@ -9,26 +9,62 @@
     <form action="{{ route('books.store') }}" method="POST" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
         @csrf
 
+        <!-- Input Judul Buku -->
         <div>
             <label for="title" style="display: block; margin-bottom: 5px; font-weight: bold;">Judul Buku</label>
-            <input type="text" name="title" id="title" required style="width: 100%; padding: 8px; box-sizing: border-box;">
+            <input type="text" name="title" id="title" value="{{ old('title') }}" style="width: 100%; padding: 8px; box-sizing: border-box;">
+            @error('title')
+                <p style="color: red; font-size: 0.875rem; margin-top: 5px;">{{ $message }}</p>
+            @enderror
         </div>
 
+        <!-- Input Kategori (Baru - Materi Pertemuan 11) -->
+        <div>
+            <label for="category_id" style="display: block; margin-bottom: 5px; font-weight: bold;">Kategori</label>
+            <select name="category_id" id="category_id" style="width: 100%; padding: 8px; box-sizing: border-box;">
+                <option value="">Pilih kategori</option>
+                @foreach ($categories as $category)
+                    <option 
+                        value="{{ $category->id }}"
+                        @selected(old('category_id') == $category->id)
+                    >
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('category_id')
+                <p style="color: red; font-size: 0.875rem; margin-top: 5px;">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <!-- Input Penulis -->
         <div>
             <label for="author" style="display: block; margin-bottom: 5px; font-weight: bold;">Penulis</label>
-            <input type="text" name="author" id="author" required style="width: 100%; padding: 8px; box-sizing: border-box;">
+            <input type="text" name="author" id="author" value="{{ old('author') }}" style="width: 100%; padding: 8px; box-sizing: border-box;">
+            @error('author')
+                <p style="color: red; font-size: 0.875rem; margin-top: 5px;">{{ $message }}</p>
+            @enderror
         </div>
 
+        <!-- Input Tahun Terbit -->
         <div>
             <label for="year" style="display: block; margin-bottom: 5px; font-weight: bold;">Tahun Terbit</label>
-            <input type="number" name="year" id="year" required style="width: 100%; padding: 8px; box-sizing: border-box;">
+            <input type="number" name="year" id="year" value="{{ old('year') }}" style="width: 100%; padding: 8px; box-sizing: border-box;">
+            @error('year')
+                <p style="color: red; font-size: 0.875rem; margin-top: 5px;">{{ $message }}</p>
+            @enderror
         </div>
 
+        <!-- Input Stok -->
         <div>
             <label for="stock" style="display: block; margin-bottom: 5px; font-weight: bold;">Stok</label>
-            <input type="number" name="stock" id="stock" required style="width: 100%; padding: 8px; box-sizing: border-box;">
+            <input type="number" name="stock" id="stock" value="{{ old('stock') }}" style="width: 100%; padding: 8px; box-sizing: border-box;">
+            @error('stock')
+                <p style="color: red; font-size: 0.875rem; margin-top: 5px;">{{ $message }}</p>
+            @enderror
         </div>
 
+        <!-- Tombol Aksi -->
         <div style="display: flex; gap: 10px; margin-top: 10px;">
             <button type="submit" style="padding: 10px 15px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Simpan</button>
             <a href="{{ route('books.index') }}" style="padding: 10px 15px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">Kembali</a>
