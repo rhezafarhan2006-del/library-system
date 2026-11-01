@@ -8,6 +8,13 @@
 
 <h2>Daftar Buku</h2>
 
+<!-- Pop-up / Alert Flash Message Sukses Login atau Aksi Lainnya -->
+@if (session('success'))
+    <div style="padding: 12px 15px; background: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 4px; margin-bottom: 20px;">
+        {{ session('success') }}
+    </div>
+@endif
+
 <!-- Tombol Tambah Buku Baru -->
 <div style="margin-bottom: 15px;">
     <a href="{{ route('books.create') }}" style="padding: 8px 12px; background: #28a745; color: white; text-decoration: none; border-radius: 4px;">+ Tambah Buku Baru</a>
@@ -19,7 +26,7 @@
             <tr>
                 <th>No</th>
                 <th>Judul Buku</th>
-                <th>Kategori</th> <!-- Kolom baru untuk menampilkan kategori -->
+                <th>Kategori</th> <!-- Kolom untuk menampilkan kategori -->
                 <th>Penulis</th>
                 <th>Tahun</th>
                 <th>Stok</th>
