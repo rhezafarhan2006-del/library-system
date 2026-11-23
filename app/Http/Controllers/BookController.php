@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Category; // Wajib diimport untuk mengakses data kategori
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class BookController extends Controller
 {
@@ -12,7 +13,7 @@ class BookController extends Controller
     {
         $title = 'Daftar Buku';
         $description = 'Daftar buku yang tersedia di perpustakaan';
-        // Menggunakan Eager Loading agar relasi category ikut terbawa[cite: 23]
+        // Menggunakan Eager Loading agar relasi category ikut terbawa
         $books = Book::with('category')->get(); 
         $stock = Book::sum('stock');
 
@@ -21,7 +22,10 @@ class BookController extends Controller
 
     public function show($id)
     { 
-        return 'ID Buku ' . $id;
+        $book = Book::with('category')->find($id);
+        $idBooks = $id;
+
+        return view('books.show', compact('book', 'idBooks'));
     }
 
     public function create()
@@ -74,8 +78,11 @@ class BookController extends Controller
 
     public function destroy(Book $book)
     {
-        $book->delete();
+        Gate::authorize('delete', $book);
+            $book->delete();
 
-        return redirect()->route('books.index')->with('success', 'Data buku berhasil dihapus.');
+        return redirect()
+            ->route('books.index')
+            ->with('success', 'Buku berhasil dihapus.');
     }
 }

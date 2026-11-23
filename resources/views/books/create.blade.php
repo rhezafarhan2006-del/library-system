@@ -1,74 +1,118 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Buku Baru')
+@section('title', 'Tambah Buku Baru - Library System')
 
 @section('content')
-<div style="max-width: 600px; margin: auto; padding: 20px;">
-    <h2>Tambah Buku Baru</h2>
-
-    <form action="{{ route('books.store') }}" method="POST" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
-        @csrf
-
-        <!-- Input Judul Buku -->
-        <div>
-            <label for="title" style="display: block; margin-bottom: 5px; font-weight: bold;">Judul Buku</label>
-            <input type="text" name="title" id="title" value="{{ old('title') }}" style="width: 100%; padding: 8px; box-sizing: border-box;">
-            @error('title')
-                <p style="color: red; font-size: 0.875rem; margin-top: 5px;">{{ $message }}</p>
-            @enderror
+<div style="max-width: 680px; margin: 0 auto;">
+    <div class="card">
+        <div class="card-header">
+            <div>
+                <h2>Tambah Buku Baru</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">
+                    Isi formulir berikut untuk menambahkan koleksi buku baru.
+                </p>
+            </div>
+            <a href="{{ route('books.index') }}" class="btn btn-sm btn-secondary">
+                &larr; Kembali
+            </a>
         </div>
 
-        <!-- Input Kategori (Baru - Materi Pertemuan 11) -->
-        <div>
-            <label for="category_id" style="display: block; margin-bottom: 5px; font-weight: bold;">Kategori</label>
-            <select name="category_id" id="category_id" style="width: 100%; padding: 8px; box-sizing: border-box;">
-                <option value="">Pilih kategori</option>
-                @foreach ($categories as $category)
-                    <option 
-                        value="{{ $category->id }}"
-                        @selected(old('category_id') == $category->id)
-                    >
-                        {{ $category->name }}
-                    </option>
-                @endforeach
-            </select>
-            @error('category_id')
-                <p style="color: red; font-size: 0.875rem; margin-top: 5px;">{{ $message }}</p>
-            @enderror
-        </div>
+        <div class="card-body">
+            <form action="{{ route('books.store') }}" method="POST">
+                @csrf
 
-        <!-- Input Penulis -->
-        <div>
-            <label for="author" style="display: block; margin-bottom: 5px; font-weight: bold;">Penulis</label>
-            <input type="text" name="author" id="author" value="{{ old('author') }}" style="width: 100%; padding: 8px; box-sizing: border-box;">
-            @error('author')
-                <p style="color: red; font-size: 0.875rem; margin-top: 5px;">{{ $message }}</p>
-            @enderror
-        </div>
+                <!-- Input Judul Buku -->
+                <div class="form-group">
+                    <label for="title" class="form-label">Judul Buku <span style="color: var(--danger);">*</span></label>
+                    <input type="text" 
+                           name="title" 
+                           id="title" 
+                           class="form-control" 
+                           placeholder="Contoh: Pemrograman Web dengan Laravel"
+                           value="{{ old('title') }}" 
+                           required>
+                    @error('title')
+                        <div class="form-error">{{ $message }}</div>
+                    @enderror
+                </div>
 
-        <!-- Input Tahun Terbit -->
-        <div>
-            <label for="year" style="display: block; margin-bottom: 5px; font-weight: bold;">Tahun Terbit</label>
-            <input type="number" name="year" id="year" value="{{ old('year') }}" style="width: 100%; padding: 8px; box-sizing: border-box;">
-            @error('year')
-                <p style="color: red; font-size: 0.875rem; margin-top: 5px;">{{ $message }}</p>
-            @enderror
-        </div>
+                <!-- Input Kategori -->
+                <div class="form-group">
+                    <label for="category_id" class="form-label">Kategori <span style="color: var(--danger);">*</span></label>
+                    <select name="category_id" id="category_id" class="form-select" required>
+                        <option value="">-- Pilih Kategori --</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('category_id')
+                        <div class="form-error">{{ $message }}</div>
+                    @enderror
+                </div>
 
-        <!-- Input Stok -->
-        <div>
-            <label for="stock" style="display: block; margin-bottom: 5px; font-weight: bold;">Stok</label>
-            <input type="number" name="stock" id="stock" value="{{ old('stock') }}" style="width: 100%; padding: 8px; box-sizing: border-box;">
-            @error('stock')
-                <p style="color: red; font-size: 0.875rem; margin-top: 5px;">{{ $message }}</p>
-            @enderror
-        </div>
+                <!-- Input Penulis -->
+                <div class="form-group">
+                    <label for="author" class="form-label">Nama Penulis <span style="color: var(--danger);">*</span></label>
+                    <input type="text" 
+                           name="author" 
+                           id="author" 
+                           class="form-control" 
+                           placeholder="Contoh: John Doe"
+                           value="{{ old('author') }}" 
+                           required>
+                    @error('author')
+                        <div class="form-error">{{ $message }}</div>
+                    @enderror
+                </div>
 
-        <!-- Tombol Aksi -->
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-            <button type="submit" style="padding: 10px 15px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Simpan</button>
-            <a href="{{ route('books.index') }}" style="padding: 10px 15px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">Kembali</a>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <!-- Input Tahun Terbit -->
+                    <div class="form-group">
+                        <label for="year" class="form-label">Tahun Terbit <span style="color: var(--danger);">*</span></label>
+                        <input type="number" 
+                               name="year" 
+                               id="year" 
+                               class="form-control" 
+                               placeholder="Contoh: 2024"
+                               value="{{ old('year', date('Y')) }}" 
+                               min="1900" 
+                               max="{{ date('Y') + 1 }}" 
+                               required>
+                        @error('year')
+                            <div class="form-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Input Stok -->
+                    <div class="form-group">
+                        <label for="stock" class="form-label">Jumlah Stok (Eks) <span style="color: var(--danger);">*</span></label>
+                        <input type="number" 
+                               name="stock" 
+                               id="stock" 
+                               class="form-control" 
+                               placeholder="Contoh: 10"
+                               value="{{ old('stock', 1) }}" 
+                               min="0" 
+                               required>
+                        @error('stock')
+                            <div class="form-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Tombol Aksi -->
+                <div style="display: flex; gap: 10px; margin-top: 10px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+                    <button type="submit" class="btn btn-success">
+                        💾 Simpan Buku
+                    </button>
+                    <a href="{{ route('books.index') }}" class="btn btn-secondary">
+                        Batal
+                    </a>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
 @endsection
